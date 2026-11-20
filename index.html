@@ -26,13 +26,14 @@
       --ok-bg: #DCEEE2;
       --warn-bg: #FFF3CD;
       --err-bg: #F8D7DA;
-      --font-ui: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif;
-      --font-retro: "Fixedsys", "Courier New", "Lucida Console", monospace;
+      --font-ui: "Fixedsys", "Fixedsys Excelsior 3.01", "Lucida Sans Typewriter", "Lucida Console", monospace;
+      --font-retro: "Fixedsys", "Fixedsys Excelsior 3.01", "Lucida Sans Typewriter", "Lucida Console", monospace;
     }
 
     * {
       box-sizing: border-box;
       border-radius: 0 !important;
+      font-family: var(--font-ui);
     }
 
     html, body {
@@ -42,7 +43,7 @@
       background: var(--grey);
       color: var(--black);
       font-family: var(--font-ui);
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.35;
       overflow-x: hidden;
     }
@@ -192,6 +193,51 @@
       font-size: 11px;
     }
 
+    /* Vertically Stacked Inventory Action Buttons */
+    .inv-actions-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: stretch;
+      min-width: 56px;
+    }
+
+    .inv-actions-stack button {
+      width: 100%;
+    }
+
+    /* Pagination Bar */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+      padding: 5px 8px;
+      background: var(--grey);
+      border: 1px solid #808080;
+      box-shadow: inset 1px 1px 0 #FFFFFF;
+      font-size: 12px;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .page-indicator {
+      background: var(--white);
+      border-top: 1px solid #808080;
+      border-left: 1px solid #808080;
+      border-right: 1px solid #FFFFFF;
+      border-bottom: 1px solid #FFFFFF;
+      padding: 2px 8px;
+      font-size: 12px;
+    }
+
     /* Inputs & Forms */
     input[type="text"],
     input[type="number"],
@@ -272,7 +318,7 @@
     .hidden { display: none !important; }
 
     /* ======================================================
-       CLASSIC 2000-ERA LOADING OVERLAY (250ms)
+       CLASSIC 2000-ERA LOADING OVERLAY (SPINNER, 250ms)
        ====================================================== */
     #loadingOverlay {
       position: fixed;
@@ -293,7 +339,7 @@
     }
 
     .loading-win {
-      width: 300px;
+      width: 310px;
       background: var(--grey);
       border-top: 2px solid #FFFFFF;
       border-left: 2px solid #FFFFFF;
@@ -323,17 +369,16 @@
       text-align: center;
     }
 
-    @keyframes retroSpin {
+    @keyframes retroSpinnerRotate {
       from { transform: rotate(0deg); }
       to { transform: rotate(360deg); }
     }
 
-    .loading-icon {
-      width: 48px;
-      height: 48px;
-      object-fit: contain;
-      background: transparent;
-      animation: retroSpin 0.25s linear infinite;
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      display: block;
+      animation: retroSpinnerRotate 0.65s linear infinite;
     }
 
     .loading-text {
@@ -521,7 +566,6 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      font-family: var(--font-ui);
       font-size: 11px;
     }
 
@@ -587,15 +631,16 @@
       flex-wrap: wrap;
     }
 
-    .beta-tag {
+    .stable-tag {
       display: inline-block;
-      background: var(--blue);
+      background: var(--green);
       color: var(--white);
       font-family: var(--font-retro);
       font-size: 11px;
       padding: 1px 5px;
       letter-spacing: 0.6px;
       vertical-align: middle;
+      border: 1px solid #0B261A;
     }
 
     /* Main Navigation Bar */
@@ -773,7 +818,7 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 11.5px;
+      font-size: 12px;
     }
 
     thead th {
@@ -903,7 +948,7 @@
       padding: 4px 6px;
       cursor: pointer;
       border-bottom: 1px solid #ECEAE4;
-      font-size: 11.5px;
+      font-size: 12px;
       display: flex;
       justify-content: space-between;
       gap: 8px;
@@ -1106,7 +1151,7 @@
       box-shadow: 3px 3px 0 rgba(0,0,0,0.35);
       display: flex;
       flex-direction: column;
-      font-size: 11.5px;
+      font-size: 12px;
     }
 
     .toast-head {
@@ -1153,18 +1198,23 @@
     }
 
     /* ======================================================
-       PRINTABLE INVOICE STYLES (EXPLICIT RETRO TYPOGRAPHY)
+       PRINTABLE INVOICE STYLES (WINDOWS 2000/XP FIXEDSYS)
        ====================================================== */
     #printArea {
       display: none;
     }
 
     @media print {
+      * {
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+      }
       body * {
         visibility: hidden !important;
       }
       #printArea, #printArea * {
         visibility: visible !important;
+        font-family: "Fixedsys", "Fixedsys Excelsior 3.01", "Lucida Sans Typewriter", "Lucida Console", monospace !important;
       }
       #printArea {
         display: block !important;
@@ -1174,73 +1224,152 @@
         width: 100%;
         background: #FFFFFF !important;
         color: #000000 !important;
-        font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif !important;
         padding: 0;
         margin: 0;
       }
       .inv-standard {
         width: 100%;
-        max-width: 210mm;
+        max-width: 204mm;
         margin: 0 auto;
-        padding: 8mm;
-        font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif !important;
+        background: #F4F1E8 !important;
+        border: 2px solid #000000;
         font-size: 11px;
-        border: 1px solid #000000;
+        line-height: 1.3;
+      }
+      .inv-win-bar {
+        background: #174C35 !important;
+        color: #FFFFFF !important;
+        padding: 5px 8px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #000000;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .inv-header-band {
+        background: #FFFFFF !important;
+        padding: 8px;
+        border-bottom: 2px solid #164A85;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .inv-meta-band {
+        background: #D4D0C8 !important;
+        padding: 6px 8px;
+        border-bottom: 1px solid #000000;
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+      }
+      .inv-section-bar {
+        background: #164A85 !important;
+        color: #FFFFFF !important;
+        padding: 3px 8px;
+        font-size: 11px;
+        font-weight: bold;
+        border-bottom: 1px solid #000000;
+      }
+      .inv-body-pad {
+        padding: 6px 8px;
+        background: #FFFFFF !important;
       }
       .inv-thermal {
-        width: 78mm;
+        width: 76mm;
         margin: 0 auto;
         padding: 2mm;
-        font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif !important;
+        background: #FFFFFF !important;
+        border: 1px solid #000000;
         font-size: 10px;
+        line-height: 1.25;
       }
-      .inv-retro,
-      .inv-num {
-        font-family: "Fixedsys", "Courier New", "Lucida Console", monospace !important;
+      .inv-thermal-bar {
+        background: #174C35 !important;
+        color: #FFFFFF !important;
+        text-align: center;
+        padding: 3px 4px;
+        font-weight: bold;
+        margin-bottom: 4px;
       }
       .inv-num {
         text-align: right;
         white-space: nowrap;
       }
-      .inv-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 2px solid #000000;
-        padding-bottom: 6px;
-        margin-bottom: 6px;
-        gap: 10px;
-      }
       .inv-logo {
-        max-height: 48px;
-        max-width: 150px;
+        max-height: 46px;
+        max-width: 145px;
         width: auto;
         height: auto;
         object-fit: contain;
         background: transparent !important;
       }
       .inv-thermal .inv-logo {
-        max-height: 36px;
-        max-width: 130px;
+        max-height: 34px;
+        max-width: 120px;
         margin: 0 auto 4px auto;
         display: block;
       }
       .inv-table {
         width: 100%;
         border-collapse: collapse;
-        margin: 6px 0;
-        font-family: "MS Sans Serif", "Microsoft Sans Serif", Tahoma, Arial, sans-serif !important;
+        margin: 0;
+        background: #FFFFFF !important;
       }
-      .inv-table th, .inv-table td {
+      .inv-table th {
+        background: #D4D0C8 !important;
+        color: #000000 !important;
         border: 1px solid #000000;
         padding: 3px 4px;
         font-size: 10px;
+      }
+      .inv-table td {
+        border: 1px solid #000000;
+        padding: 3px 4px;
+        font-size: 10px;
+      }
+      .inv-table tbody tr:nth-child(even) {
+        background: #F4F1E8 !important;
       }
       .inv-thermal .inv-table th, .inv-thermal .inv-table td {
         border: none;
         border-bottom: 1px dashed #000000;
         padding: 2px 1px;
         font-size: 9.5px;
+        background: transparent !important;
+      }
+      .inv-totals-box {
+        width: 245px;
+        border: 2px solid #000000;
+        background: #F4F1E8 !important;
+      }
+      .inv-totals-head {
+        background: #164A85 !important;
+        color: #FFFFFF !important;
+        padding: 2px 6px;
+        font-weight: bold;
+        font-size: 10.5px;
+      }
+      .inv-totals-body {
+        padding: 5px 6px;
+      }
+      .inv-grand-row {
+        background: #174C35 !important;
+        color: #FFFFFF !important;
+        padding: 3px 5px;
+        margin: 3px -6px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+      }
+      .inv-footer-band {
+        background: #D4D0C8 !important;
+        border-top: 2px solid #000000;
+        padding: 6px 8px;
+        display: flex;
+        justify-content: space-between;
+        font-size: 10px;
       }
     }
 
@@ -1269,16 +1398,20 @@
 <body>
 
   <!-- ======================================================
-       0. CLASSIC 2000-ERA LOADING OVERLAY (250ms)
+       0. CLASSIC 2000-ERA LOADING OVERLAY (SPINNER, 250ms)
        ====================================================== -->
   <div id="loadingOverlay" aria-live="polite" aria-busy="true">
     <div class="loading-win">
       <div class="loading-titlebar">
         <span>MEDISTOCK</span>
-        <span class="beta-tag">BETA</span>
+        <span class="stable-tag">STABLE</span>
       </div>
       <div class="loading-body">
-        <img src="https://i.postimg.cc/pXY0Yyjv/Untitled-design-(11).png" alt="MEDISTOCK Icon" class="loading-icon">
+        <svg class="loading-spinner" viewBox="0 0 36 36" aria-hidden="true">
+          <circle cx="18" cy="18" r="14" fill="none" stroke="#D4D0C8" stroke-width="4" />
+          <path d="M18 4 A14 14 0 0 1 32 18" fill="none" stroke="#174C35" stroke-width="4" stroke-linecap="square" />
+          <path d="M32 18 A14 14 0 0 1 18 32" fill="none" stroke="#164A85" stroke-width="4" stroke-linecap="square" />
+        </svg>
         <div id="loadingMessage" class="loading-text">Loading MEDISTOCK...</div>
         <div class="loading-bar-track">
           <div id="loadingBarFill" class="loading-bar-fill"></div>
@@ -1294,7 +1427,7 @@
     <div class="auth-window wide">
       <div class="win-titlebar">
         <span id="setupTitle">MEDISTOCK — First-Time Pharmacy Setup</span>
-        <span class="beta-tag">BETA</span>
+        <span class="stable-tag">STABLE</span>
       </div>
       <div class="auth-banner">
         <img src="https://i.postimg.cc/6pnmPzgM/image.png" alt="MEDISTOCK" class="brand-logo-transparent auth-logo"
@@ -1375,7 +1508,7 @@
     <div class="auth-window">
       <div class="win-titlebar">
         <span id="loginTitle">MEDISTOCK — System Login</span>
-        <span class="beta-tag">BETA</span>
+        <span class="stable-tag">STABLE</span>
       </div>
       <div class="auth-banner">
         <img src="https://i.postimg.cc/6pnmPzgM/image.png" alt="MEDISTOCK" class="brand-logo-transparent auth-logo"
@@ -1400,7 +1533,7 @@
           </div>
         </div>
         <div class="auth-footer">
-          <span class="muted" style="font-size:11px;">MEDISTOCK <span class="beta-tag">BETA</span></span>
+          <span class="muted" style="font-size:11px;">MEDISTOCK <span class="stable-tag">STABLE</span></span>
           <button type="submit" id="loginSubmitBtn" class="btn-primary">Sign In</button>
         </div>
       </form>
@@ -1687,6 +1820,16 @@
                 <tbody id="invTableBody"></tbody>
               </table>
             </div>
+
+            <!-- Inventory Pagination Bar (50 records per page) -->
+            <div class="pagination-bar" id="invPaginationBar">
+              <div id="invPageSummary">Showing 0 of 0</div>
+              <div class="pagination-controls">
+                <button type="button" class="btn-sm" id="invPrevPageBtn">Previous</button>
+                <span class="page-indicator" id="invPageIndicator">Page 1 of 1</span>
+                <button type="button" class="btn-sm" id="invNextPageBtn">Next</button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1794,7 +1937,7 @@
               <div class="panel">
                 <div class="panel-title">
                   <span>ADD MEDICINE TO BILL</span>
-                  <span id="billSelectedStockInfo" style="font-family:var(--font-ui); font-size:11px;"></span>
+                  <span id="billSelectedStockInfo" style="font-size:11px;"></span>
                 </div>
                 <div class="form-grid">
                   <div class="span-2">
@@ -1830,7 +1973,7 @@
               <div class="panel">
                 <div class="panel-title green">
                   <span>INVOICE ITEMS</span>
-                  <span id="billItemCountLabel" style="font-family:var(--font-ui); font-size:11px;">0 items</span>
+                  <span id="billItemCountLabel" style="font-size:11px;">0 items</span>
                 </div>
                 <div class="table-wrap">
                   <table>
@@ -2156,8 +2299,8 @@
             <div class="panel-title green"><span>ABOUT &amp; DESKTOP INSTALLATION</span></div>
             <div style="display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap;">
               <div>
-                <div class="retro" style="font-size:15px; color:var(--green);">MEDISTOCK <span class="beta-tag">BETA</span></div>
-                <div style="font-size:11px; margin-top:2px;">Medical Billing &amp; Inventory Management Software</div>
+                <div class="retro" style="font-size:15px; color:var(--green);">MEDISTOCK <span class="stable-tag">STABLE</span></div>
+                <div style="font-size:11px; margin-top:2px;">Medical Billing &amp; Inventory — Version 1.01.20.11.26 (Stable)</div>
                 <div class="muted" style="font-size:10.5px; margin-top:4px;">
                   Standalone single-file desktop web application. Offline service-worker caching is not available inside a single local HTML file; browser installation works best when served over HTTPS or localhost.
                 </div>
@@ -2172,7 +2315,7 @@
     <footer class="app-statusbar">
       <div style="display:flex; gap:6px; flex-wrap:wrap;">
         <span class="status-cell"><strong>MEDISTOCK</strong> — Medical Billing &amp; Inventory</span>
-        <span class="status-cell"><span class="beta-tag">BETA</span></span>
+        <span class="status-cell"><span class="stable-tag">STABLE</span></span>
       </div>
       <div style="display:flex; gap:6px; flex-wrap:wrap;">
         <span class="status-cell">Keys: Tab / Shift+Tab / Enter / Esc / Backspace / Ctrl+S</span>
@@ -2185,7 +2328,7 @@
        MODALS
        ====================================================== -->
 
-  <!-- Internal System Confirm / Prompt Dialog (Replaces browser confirm/prompt) -->
+  <!-- Internal System Confirm / Prompt Dialog -->
   <div id="sysDialogModal" class="modal-overlay" role="dialog" aria-modal="true">
     <div class="modal-win sm">
       <div class="modal-header">
@@ -2538,11 +2681,12 @@
       /* ======================================================
          CONSTANTS & STATE
          ====================================================== */
-      const INTERNAL_VERSION = '1.01.19.11.54';
+      const INTERNAL_VERSION = '1.01.20.11.26 (Stable)';
       const STORAGE_KEY = 'medistock_db_v1';
       const OFFICIAL_LOGO_URL = 'https://i.postimg.cc/6pnmPzgM/image.png';
       const OFFICIAL_ICON_URL = 'https://i.postimg.cc/pXY0Yyjv/Untitled-design-(11).png';
       const LOADING_DURATION_MS = 250;
+      const INV_PAGE_SIZE = 50;
 
       // Strictly in-memory authentication flag (NEVER persisted — login required on every load)
       let isAuthenticated = false;
@@ -2552,6 +2696,7 @@
       let currentModule = 'dashboard';
       let currentDashPeriod = 'daily';
       let invSort = { key: 'name', dir: 1 };
+      let invCurrentPage = 1;
       let currentBillItems = [];
       let viewedInvoiceId = null;
       let viewedCustomerId = null;
@@ -2562,7 +2707,7 @@
       let ddInvCat, ddInvComp, ddBillCust, ddBillMed, ddBillBatch, ddPurMed, ddAdjMed;
 
       /* ======================================================
-         CLASSIC 2000-ERA LOADING OVERLAY (EXACTLY 250ms)
+         CLASSIC 2000-ERA LOADING OVERLAY (SPINNER, 250ms)
          ====================================================== */
       let loadingTimer = null;
 
@@ -2573,7 +2718,6 @@
         if (loadingTimer) clearTimeout(loadingTimer);
 
         msgEl.textContent = message || 'Loading MEDISTOCK...';
-        // Restart classic segmented progress bar animation
         bar.style.animation = 'none';
         void bar.offsetWidth;
         bar.style.animation = '';
@@ -2793,7 +2937,6 @@
         setTimeout(removeToast, duration);
       }
 
-      // Internal Modal Confirm / Prompt (Zero native confirm/prompt/alert)
       function openSysDialog({ title = 'CONFIRMATION', message = '', okText = 'OK', cancelText = 'Cancel', altText = '', danger = false, promptMode = false, inputLabel = 'Enter Value', defaultValue = '' }) {
         return new Promise((resolve) => {
           const modal = $('sysDialogModal');
@@ -2984,8 +3127,6 @@
                 this.selectOption(this.filtered[idx]);
               }
             } else if (e.key === 'Tab') {
-              // Select highlighted item if dropdown is open & an item is highlighted,
-              // then allow native Tab focus movement to proceed to the next field.
               if (this.isOpen && this.highlightIdx >= 0 && this.filtered[this.highlightIdx]) {
                 this.selectOption(this.filtered[this.highlightIdx]);
               } else if (this.isOpen) {
@@ -3045,7 +3186,6 @@
           const q = String(query || '').trim().toLowerCase();
           if (q === '') {
             this.filtered = [...this.options];
-            // If user already has a selected value, highlight it; otherwise highlight nothing until navigated or typed
             const selIdx = this.selectedValue ? this.filtered.findIndex(o => o.value === this.selectedValue) : -1;
             this.highlightIdx = selIdx;
           } else {
@@ -3452,7 +3592,7 @@
       $('qaAddCust').addEventListener('click', () => { switchModule('customers'); openCustomerModal(); });
 
       /* ======================================================
-         MODULE 2: INVENTORY + ROBUST EXCEL/CSV IMPORT & EXPORT
+         MODULE 2: INVENTORY (PAGINATED 50/PAGE + STACKED ACTIONS)
          ====================================================== */
       document.querySelectorAll('[data-invtab]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -3484,7 +3624,7 @@
         $('companySuggestions').innerHTML = comps.sort().map(c => `<option value="${escHtml(c)}">`).join('');
       }
 
-      function renderInventoryTable() {
+      function getFilteredSortedInventory() {
         const q = ($('invSearch').value || '').trim().toLowerCase();
         const cat = ddInvCat.getValue();
         const comp = ddInvComp.getValue();
@@ -3492,7 +3632,7 @@
         const lowThresh = Number(db.settings.lowStockThreshold) || 10;
         const expDays = Number(db.settings.expiryAlertDays) || 60;
 
-        let list = db.medicines.filter(m => {
+        const list = db.medicines.filter(m => {
           if (cat && m.category !== cat) return false;
           if (comp && m.company !== comp) return false;
           if (q) {
@@ -3516,13 +3656,43 @@
           return String(av).localeCompare(String(bv), undefined, { sensitivity: 'base' }) * invSort.dir;
         });
 
+        return list;
+      }
+
+      function renderInventoryTable() {
+        const list = getFilteredSortedInventory();
+        const total = list.length;
+        const totalPages = Math.max(1, Math.ceil(total / INV_PAGE_SIZE));
+
+        // Ensure current page is valid (e.g. after deleting last item on a page)
+        if (invCurrentPage > totalPages) invCurrentPage = totalPages;
+        if (invCurrentPage < 1) invCurrentPage = 1;
+
+        const startIdx = (invCurrentPage - 1) * INV_PAGE_SIZE;
+        const endIdx = Math.min(startIdx + INV_PAGE_SIZE, total);
+        const pageItems = list.slice(startIdx, endIdx);
+
+        const lowThresh = Number(db.settings.lowStockThreshold) || 10;
+        const expDays = Number(db.settings.expiryAlertDays) || 60;
+
+        // Update Pagination Bar
+        $('invPageSummary').textContent = total === 0
+          ? 'Showing 0 of 0'
+          : `Showing ${startIdx + 1}–${endIdx} of ${total}`;
+        $('invPageIndicator').textContent = `Page ${invCurrentPage} of ${totalPages}`;
+        $('invPrevPageBtn').disabled = invCurrentPage <= 1;
+        $('invNextPageBtn').disabled = invCurrentPage >= totalPages;
+
         const tbody = $('invTableBody');
-        if (list.length === 0) {
+        if (pageItems.length === 0) {
           tbody.innerHTML = `<tr class="empty-row"><td colspan="12">No medicines found. Click "Add Medicine" or "Import CSV" to add stock.</td></tr>`;
           return;
         }
 
-        tbody.innerHTML = list.map(m => {
+        // Render only the 50 rows for the active page
+        const rowsHtml = new Array(pageItems.length);
+        for (let i = 0; i < pageItems.length; i++) {
+          const m = pageItems[i];
           const dLeft = daysUntil(m.expiry);
           let badges = '';
           if (m.qty <= 0) badges += '<span class="badge badge-err">OUT</span> ';
@@ -3532,7 +3702,7 @@
           if (dLeft < 0) badges += '<span class="badge badge-err">EXP</span>';
           else if (dLeft <= expDays) badges += `<span class="badge badge-warn">${dLeft}d</span>`;
 
-          return `
+          rowsHtml[i] = `
             <tr>
               <td><strong>${escHtml(m.name)}</strong>${m.barcode ? `<div class="muted" style="font-size:10px;">BC: ${escHtml(m.barcode)}</div>` : ''}</td>
               <td>${escHtml(m.company || '-')}</td>
@@ -3545,26 +3715,49 @@
               <td class="num">${escHtml(formatCurrency(m.sellingPrice))}</td>
               <td class="num">${escHtml(formatCurrency(m.mrp))}</td>
               <td>${badges}</td>
-              <td style="white-space:nowrap;">
-                <button type="button" class="btn-sm" onclick="window._medistock.editMedicine('${m.id}')">Edit</button>
-                <button type="button" class="btn-sm btn-danger" onclick="window._medistock.deleteMedicine('${m.id}')">Del</button>
+              <td>
+                <div class="inv-actions-stack">
+                  <button type="button" class="btn-sm" onclick="window._medistock.editMedicine('${m.id}')">Edit</button>
+                  <button type="button" class="btn-sm btn-danger" onclick="window._medistock.deleteMedicine('${m.id}')">Delete</button>
+                </div>
               </td>
             </tr>
           `;
-        }).join('');
+        }
+        tbody.innerHTML = rowsHtml.join('');
       }
+
+      $('invPrevPageBtn').addEventListener('click', () => {
+        if (invCurrentPage > 1) {
+          invCurrentPage--;
+          renderInventoryTable();
+        }
+      });
+
+      $('invNextPageBtn').addEventListener('click', () => {
+        invCurrentPage++;
+        renderInventoryTable();
+      });
 
       document.querySelectorAll('#invTab-stock thead th.sortable').forEach(th => {
         th.addEventListener('click', () => {
           const k = th.dataset.sort;
           if (invSort.key === k) invSort.dir *= -1;
           else invSort = { key: k, dir: 1 };
+          invCurrentPage = 1;
           renderInventoryTable();
         });
       });
 
-      $('invSearch').addEventListener('input', renderInventoryTable);
-      $('invFilterStatus').addEventListener('change', renderInventoryTable);
+      $('invSearch').addEventListener('input', () => {
+        invCurrentPage = 1;
+        renderInventoryTable();
+      });
+
+      $('invFilterStatus').addEventListener('change', () => {
+        invCurrentPage = 1;
+        renderInventoryTable();
+      });
 
       function renderBatchSummary() {
         const map = {};
@@ -3587,7 +3780,7 @@
           body.innerHTML = `<tr class="empty-row"><td colspan="6">No batches available.</td></tr>`;
           return;
         }
-        body.innerHTML = rows.map(r => `
+        body.innerHTML = rows.slice(0, 300).map(r => `
           <tr>
             <td><strong>${escHtml(r.name)}</strong></td>
             <td>${escHtml(r.company || '-')}</td>
@@ -3845,7 +4038,6 @@
       }
 
       function parseCSVText(text) {
-        // Strip UTF-8 BOM if present
         const src = String(text || '').replace(/^\uFEFF/, '');
         const rows = [];
         let row = [];
@@ -3898,12 +4090,10 @@
         const s = String(val || '').trim();
         if (!s) return todayISO();
         if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
-        // DD/MM/YYYY or DD-MM-YYYY
         const dmy = s.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})$/);
         if (dmy) {
           return `${dmy[3]}-${dmy[2].padStart(2, '0')}-${dmy[1].padStart(2, '0')}`;
         }
-        // MM/YYYY or YYYY-MM
         const my = s.match(/^(\d{1,2})[\/\-](\d{4})$/);
         if (my) return `${my[2]}-${my[1].padStart(2, '0')}-28`;
         const ym = s.match(/^(\d{4})[\/\-](\d{1,2})$/);
@@ -3939,7 +4129,6 @@
           lines.push(cols.map(csvEscapeField).join(','));
         });
 
-        // Prepend UTF-8 BOM for seamless Excel compatibility
         const csvContent = '\uFEFF' + lines.join('\r\n');
         const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
         const a = document.createElement('a');
@@ -4127,6 +4316,7 @@
         saveDB();
         closeModal('csvImportModal');
         pendingCsvRecords = [];
+        invCurrentPage = 1;
         refreshAllDropdowns();
         renderInventoryAll();
         if (currentModule === 'dashboard') renderDashboard();
@@ -4606,7 +4796,7 @@
       });
 
       /* ======================================================
-         INVOICE PRINTING (MS SANS SERIF + FIXEDSYS + LOGO FALLBACK)
+         INVOICE PRINTING (WINDOWS 2000/XP BLUE/GREEN + FIXEDSYS)
          ====================================================== */
       function getInvoiceLogoSrc() {
         return (db.settings.pharmacyLogo && db.settings.pharmacyLogo.trim() !== '')
@@ -4624,7 +4814,7 @@
         if (layout === 'thermal') {
           const rows = (inv.items || []).map(it => `
             <tr>
-              <td>${escHtml(it.name)}<br><small class="inv-retro">${escHtml(it.batch)}</small></td>
+              <td>${escHtml(it.name)}<br><small>${escHtml(it.batch)}</small></td>
               <td class="inv-num">${it.qty}</td>
               <td class="inv-num">${formatNumber(it.rate, 2)}</td>
               <td class="inv-num">${formatNumber(it.lineTotal, 2)}</td>
@@ -4633,16 +4823,17 @@
 
           printArea.innerHTML = `
             <div class="inv-thermal">
+              <div class="inv-thermal-bar">MEDISTOCK — CASH MEMO</div>
               <div style="text-align:center; border-bottom:1px dashed #000; padding-bottom:4px; margin-bottom:4px;">
                 <img src="${escHtml(logoSrc)}" alt="Logo" class="inv-logo">
-                <div class="inv-retro" style="font-weight:bold; font-size:12px;">${escHtml(s.shopName)}</div>
+                <div style="font-weight:bold; font-size:12px;">${escHtml(s.shopName)}</div>
                 <div>${escHtml(s.shopAddress)}</div>
                 <div>Ph: ${escHtml(s.shopPhone)}</div>
-                ${s.gstin ? `<div>GSTIN: <span class="inv-retro">${escHtml(s.gstin)}</span></div>` : ''}
-                ${s.drugLicense ? `<div>DL No: <span class="inv-retro">${escHtml(s.drugLicense)}</span></div>` : ''}
+                ${s.gstin ? `<div>GSTIN: ${escHtml(s.gstin)}</div>` : ''}
+                ${s.drugLicense ? `<div>DL No: ${escHtml(s.drugLicense)}</div>` : ''}
               </div>
-              <div style="margin-bottom:4px;">
-                Inv: <strong class="inv-retro">${escHtml(inv.invoiceNo)}</strong><br>
+              <div style="margin-bottom:4px; background:#D4D0C8; padding:3px;">
+                Inv #: <strong>${escHtml(inv.invoiceNo)}</strong><br>
                 Date: ${escHtml(formatDateTime(inv.date))}<br>
                 Cust: ${escHtml(inv.customerName)} ${inv.customerPhone ? '(' + escHtml(inv.customerPhone) + ')' : ''}
               </div>
@@ -4652,17 +4843,19 @@
                 </thead>
                 <tbody>${rows}</tbody>
               </table>
-              <div style="border-top:1px dashed #000; padding-top:4px;">
+              <div style="border-top:1px dashed #000; padding-top:4px; margin-top:4px;">
                 <div style="display:flex; justify-content:space-between;"><span>Subtotal:</span><span class="inv-num">${escHtml(formatCurrency(inv.subtotal))}</span></div>
                 ${inv.totalDiscount > 0 ? `<div style="display:flex; justify-content:space-between;"><span>Discount:</span><span class="inv-num">-${escHtml(formatCurrency(inv.totalDiscount))}</span></div>` : ''}
                 ${inv.taxAmount > 0 ? `<div style="display:flex; justify-content:space-between;"><span>GST (${inv.gstRate}%):</span><span class="inv-num">${escHtml(formatCurrency(inv.taxAmount))}</span></div>` : ''}
-                <div style="display:flex; justify-content:space-between; font-weight:bold; font-size:11px; margin-top:2px;"><span>TOTAL:</span><span class="inv-num">${escHtml(formatCurrency(inv.grandTotal))}</span></div>
+                <div style="background:#174C35; color:#FFFFFF; padding:2px 4px; display:flex; justify-content:space-between; font-weight:bold; font-size:11px; margin:3px 0;">
+                  <span>TOTAL:</span><span class="inv-num">${escHtml(formatCurrency(inv.grandTotal))}</span>
+                </div>
                 <div style="display:flex; justify-content:space-between;"><span>Paid (${escHtml(inv.paymentMethod)}):</span><span class="inv-num">${escHtml(formatCurrency(inv.amountPaid))}</span></div>
                 ${inv.dueAmount > 0 ? `<div style="display:flex; justify-content:space-between;"><span>Balance Due:</span><span class="inv-num">${escHtml(formatCurrency(inv.dueAmount))}</span></div>` : ''}
               </div>
               <div style="text-align:center; margin-top:8px; border-top:1px dashed #000; padding-top:4px; font-size:9px;">
                 Thank you. Get well soon.<br>
-                Powered by <span class="inv-retro">MEDISTOCK</span>
+                Powered by MEDISTOCK
               </div>
             </div>
           `;
@@ -4671,7 +4864,7 @@
             <tr>
               <td style="text-align:center;">${idx + 1}</td>
               <td>${escHtml(it.name)}</td>
-              <td class="inv-retro">${escHtml(it.batch)}</td>
+              <td>${escHtml(it.batch)}</td>
               <td>${escHtml(formatDate(it.expiry))}</td>
               <td class="inv-num">${it.qty}</td>
               <td class="inv-num">${escHtml(formatCurrency(it.mrp))}</td>
@@ -4683,73 +4876,84 @@
 
           printArea.innerHTML = `
             <div class="inv-standard">
-              <div class="inv-header">
+              <div class="inv-win-bar">
+                <span>TAX INVOICE / PHARMACY CASH MEMO</span>
+                <span>INVOICE #: ${escHtml(inv.invoiceNo)}</span>
+              </div>
+
+              <div class="inv-header-band">
                 <div style="display:flex; align-items:center; gap:10px;">
                   <img src="${escHtml(logoSrc)}" alt="Pharmacy Logo" class="inv-logo">
                   <div>
-                    <div class="inv-retro" style="font-size:16px; font-weight:bold;">${escHtml(s.shopName)}</div>
+                    <div style="font-size:16px; font-weight:bold; color:#174C35;">${escHtml(s.shopName)}</div>
                     <div>${escHtml(s.shopAddress)}</div>
                     <div>Phone: ${escHtml(s.shopPhone)} ${s.proprietor ? `| Pharmacist: ${escHtml(s.proprietor)}` : ''}</div>
-                    <div>${s.gstin ? `GSTIN: <span class="inv-retro">${escHtml(s.gstin)}</span>` : ''} ${s.drugLicense ? `${s.gstin ? ' | ' : ''}Drug Lic: <span class="inv-retro">${escHtml(s.drugLicense)}</span>` : ''}</div>
+                    <div>${s.gstin ? `GSTIN: ${escHtml(s.gstin)}` : ''} ${s.drugLicense ? `${s.gstin ? ' | ' : ''}Drug Lic: ${escHtml(s.drugLicense)}` : ''}</div>
                   </div>
                 </div>
                 <div style="text-align:right;">
-                  <div class="inv-retro" style="font-size:13px; font-weight:bold;">TAX INVOICE / CASH MEMO</div>
-                  <div>Invoice #: <strong class="inv-retro">${escHtml(inv.invoiceNo)}</strong></div>
-                  <div>Date: ${escHtml(formatDateTime(inv.date))}</div>
+                  <div><strong>Date:</strong> ${escHtml(formatDateTime(inv.date))}</div>
+                  <div><strong>Payment:</strong> ${escHtml(inv.paymentMethod)}</div>
+                  <div><strong>Status:</strong> ${escHtml(inv.status.toUpperCase())}</div>
                 </div>
               </div>
 
-              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+              <div class="inv-meta-band">
                 <div>
-                  <strong>Patient / Customer:</strong> ${escHtml(inv.customerName)}<br>
-                  ${inv.customerPhone ? `<strong>Phone:</strong> ${escHtml(inv.customerPhone)}<br>` : ''}
-                  ${inv.customerAddress ? `<strong>Address:</strong> ${escHtml(inv.customerAddress)}` : ''}
+                  <strong>PATIENT / CUSTOMER:</strong> ${escHtml(inv.customerName)}<br>
+                  ${inv.customerPhone ? `<strong>PHONE:</strong> ${escHtml(inv.customerPhone)} ` : ''}
+                  ${inv.customerAddress ? `| <strong>ADDRESS:</strong> ${escHtml(inv.customerAddress)}` : ''}
                 </div>
                 <div style="text-align:right;">
-                  <strong>Payment Mode:</strong> ${escHtml(inv.paymentMethod)}<br>
-                  <strong>Status:</strong> <span class="inv-retro">${escHtml(inv.status.toUpperCase())}</span>
+                  <strong>OPERATOR:</strong> ${escHtml(inv.operator || activeOperator || 'admin')}
                 </div>
               </div>
 
-              <table class="inv-table">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th style="text-align:left;">Medicine Description</th>
-                    <th style="text-align:left;">Batch</th>
-                    <th style="text-align:left;">Expiry</th>
-                    <th style="text-align:right;">Qty</th>
-                    <th style="text-align:right;">MRP</th>
-                    <th style="text-align:right;">Rate</th>
-                    <th style="text-align:right;">Disc %</th>
-                    <th style="text-align:right;">Amount</th>
-                  </tr>
-                </thead>
-                <tbody>${rows}</tbody>
-              </table>
+              <div class="inv-section-bar">PRESCRIPTION / MEDICINE ITEMS</div>
+              <div class="inv-body-pad">
+                <table class="inv-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th style="text-align:left;">Medicine Description</th>
+                      <th style="text-align:left;">Batch</th>
+                      <th style="text-align:left;">Expiry</th>
+                      <th style="text-align:right;">Qty</th>
+                      <th style="text-align:right;">MRP</th>
+                      <th style="text-align:right;">Rate</th>
+                      <th style="text-align:right;">Disc %</th>
+                      <th style="text-align:right;">Amount</th>
+                    </tr>
+                  </thead>
+                  <tbody>${rows}</tbody>
+                </table>
 
-              <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:8px;">
-                <div style="font-size:9.5px; max-width:55%;">
-                  <strong>Terms &amp; Notes:</strong><br>
-                  1. Medicines once sold will not be taken back without original bill.<br>
-                  2. Please verify batch &amp; expiry before leaving the counter.<br>
-                  3. Generated using <span class="inv-retro">MEDISTOCK</span>.
-                </div>
-                <div style="width:240px; border:1px solid #000; padding:5px;">
-                  <div style="display:flex; justify-content:space-between;"><span>Subtotal:</span><span class="inv-num">${escHtml(formatCurrency(inv.subtotal))}</span></div>
-                  <div style="display:flex; justify-content:space-between;"><span>Discount:</span><span class="inv-num">-${escHtml(formatCurrency(inv.totalDiscount))}</span></div>
-                  <div style="display:flex; justify-content:space-between;"><span>GST (${inv.gstRate}%):</span><span class="inv-num">${escHtml(formatCurrency(inv.taxAmount))}</span></div>
-                  <div style="display:flex; justify-content:space-between; font-weight:bold; border-top:1px solid #000; margin-top:3px; padding-top:3px;">
-                    <span>Grand Total:</span><span class="inv-num">${escHtml(formatCurrency(inv.grandTotal))}</span>
+                <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-top:10px; gap:10px;">
+                  <div style="font-size:9.5px; max-width:54%; border:1px solid #808080; background:#F4F1E8; padding:6px;">
+                    <strong>TERMS &amp; CONDITIONS:</strong><br>
+                    1. Medicines once sold will not be taken back without original bill.<br>
+                    2. Please verify batch &amp; expiry before leaving the counter.<br>
+                    3. Computer generated invoice via MEDISTOCK.
                   </div>
-                  <div style="display:flex; justify-content:space-between;"><span>Amount Paid:</span><span class="inv-num">${escHtml(formatCurrency(inv.amountPaid))}</span></div>
-                  <div style="display:flex; justify-content:space-between;"><span>Balance Due:</span><span class="inv-num">${escHtml(formatCurrency(inv.dueAmount))}</span></div>
+
+                  <div class="inv-totals-box">
+                    <div class="inv-totals-head">PAYMENT SUMMARY</div>
+                    <div class="inv-totals-body">
+                      <div style="display:flex; justify-content:space-between;"><span>Subtotal:</span><span class="inv-num">${escHtml(formatCurrency(inv.subtotal))}</span></div>
+                      <div style="display:flex; justify-content:space-between;"><span>Discount:</span><span class="inv-num">-${escHtml(formatCurrency(inv.totalDiscount))}</span></div>
+                      <div style="display:flex; justify-content:space-between;"><span>GST (${inv.gstRate}%):</span><span class="inv-num">${escHtml(formatCurrency(inv.taxAmount))}</span></div>
+                      <div class="inv-grand-row">
+                        <span>GRAND TOTAL:</span><span class="inv-num">${escHtml(formatCurrency(inv.grandTotal))}</span>
+                      </div>
+                      <div style="display:flex; justify-content:space-between;"><span>Amount Paid:</span><span class="inv-num">${escHtml(formatCurrency(inv.amountPaid))}</span></div>
+                      <div style="display:flex; justify-content:space-between;"><span>Balance Due:</span><span class="inv-num">${escHtml(formatCurrency(inv.dueAmount))}</span></div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div style="display:flex; justify-content:space-between; margin-top:24px; font-size:10px;">
-                <span>Customer Signature</span>
+              <div class="inv-footer-band">
+                <span></span>
                 <span>For ${escHtml(s.shopName)} (Authorized Signatory)</span>
               </div>
             </div>
@@ -5138,6 +5342,7 @@
             if (!ok) return;
             localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
             db = loadDB();
+            invCurrentPage = 1;
             applyTheme();
             updateHeaderShopInfo();
             refreshAllDropdowns();
@@ -5167,6 +5372,7 @@
         }
         localStorage.removeItem(STORAGE_KEY);
         db = createFreshDB();
+        invCurrentPage = 1;
         applyTheme();
         showLoadingOverlay('Resetting MEDISTOCK...', () => {
           showStartupGate();
@@ -5281,12 +5487,18 @@
         ddInvCat = new SearchableDropdown($('invFilterCatWrap'), {
           placeholder: 'All Categories',
           emptyLabel: 'All Categories',
-          onChange: () => renderInventoryTable()
+          onChange: () => {
+            invCurrentPage = 1;
+            renderInventoryTable();
+          }
         });
         ddInvComp = new SearchableDropdown($('invFilterCompWrap'), {
           placeholder: 'All Companies',
           emptyLabel: 'All Companies',
-          onChange: () => renderInventoryTable()
+          onChange: () => {
+            invCurrentPage = 1;
+            renderInventoryTable();
+          }
         });
         ddBillCust = new SearchableDropdown($('billCustomerWrap'), {
           placeholder: 'Walk-in Customer (type to search)...',
@@ -5356,7 +5568,7 @@
       };
 
       /* ======================================================
-         BOOT SEQUENCE (250ms CLASSIC LOADING -> LOGIN / SETUP)
+         BOOT SEQUENCE (250ms CLASSIC SPINNER -> LOGIN / SETUP)
          ====================================================== */
       setupManifest();
       applyTheme();
